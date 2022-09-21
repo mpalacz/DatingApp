@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Remember to install certificate on mashine that you'll be working on!
+ssl
+
 # compiled output
 /dist
 /tmp
