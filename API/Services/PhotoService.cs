@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using API.Helpers;
 using API.Interfaces;
@@ -32,7 +29,7 @@ namespace API.Services
 
             if (file.Length > 0)
             {
-                await using var stream = file.OpenReadStream();
+                using var stream = file.OpenReadStream();
                 var uploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(file.FileName, stream),
