@@ -70,7 +70,8 @@
           "options": {
             "sslCert": "./ssl/server.crt",
             "sslKey": "./ssl/server.key",
-            "ssl": true
+            "ssl": true,
+            "disableHostCheck": true
           },
           "configurations": {
             "production": {

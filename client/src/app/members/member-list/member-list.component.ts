@@ -12,9 +12,10 @@ import { MembersService } from 'src/app/_services/members.service';
   templateUrl: './member-list.component.html',
   styleUrls: ['./member-list.component.css']
 })
+
 export class MemberListComponent implements OnInit {
-  members: Member[];
   pagination: Pagination;
+  members: Member[];
   userParams: UserParams;
   user: User;
   genderList = [{ value: 'male', display: 'Males' }, { value: 'female', display: 'Females' }];
@@ -32,8 +33,8 @@ export class MemberListComponent implements OnInit {
 
   loadMembers() {
     this.memberService.getMembers(this.userParams).subscribe(response => {
-      this.members = response.result;
       this.pagination = response.pagination;
+      this.members = response.result;
     });
   }
 
