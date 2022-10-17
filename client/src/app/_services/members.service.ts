@@ -89,8 +89,8 @@ export class MembersService {
     return this.http.post(this.baseUrl + 'likes/' + username, {});
   }
 
-  getAllLifecycleHooks(predicate: string) {
-    return this.http.get(this.baseUrl + 'likes?=' + predicate);
+  getLikes(predicate: string) {
+    return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate=' + predicate);
   }
 
   private getPaginatedResult<T>(url, params) {
