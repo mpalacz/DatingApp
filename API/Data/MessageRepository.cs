@@ -22,14 +22,14 @@ namespace API.Data
             _context.Messages.Add(message);
         }
 
-        public async void DeleteMessage(Message message)
+        public void DeleteMessage(Message message)
         {
-            return await _context.Messages.FindAsync(id);
+            _context.Messages.Remove(message);
         }
 
-        public Task<Message> GetMessage(int id)
+        public async Task<Message> GetMessage(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Messages.FindAsync(id);
         }
 
         public Task<PagedList<MessageDto>> GetMessagesForUser()
