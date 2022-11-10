@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { group } from 'console';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Group } from '../_models/group';
 import { Message } from '../_models/message';
 import { User } from '../_models/user';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
@@ -34,10 +36,23 @@ export class MessageService {
       this.messageThreadSource.next(messages);
     });
 
-    this.hubConnection.on('NewMessage', message=>{
-      this.messageThread$.pipe(take(1)).subscribe(messages=>{
-        this.messageThreadSource.next([...messages,message])
+    this.hubConnection.on('NewMessage', message => {
+      this.messageThread$.pipe(take(1)).subscribe(messages => {
+        this.messageThreadSource.next([...messages, message])
       })
+    })
+
+    this.hubConnection.on('UpdatedGroup', (group: Group) => {
+      if (group.connections.some(x => x.username === otherUsername)) {
+        this.messageThread$.pipe(take(1)).subscribe(messages => {
+          messages.forEach(message => {
+            if (!message.dateRead) {
+              message.dateRead = new Date(Date.now());
+            }
+          })
+          this.messageThreadSource.next([...messages]);
+        })
+      }
     })
   }
 
@@ -58,7 +73,7 @@ export class MessageService {
   }
 
   async sendMessage(username: string, content: string) {
-    return this.hubConnection.invoke('SendMessage', { recipientUsername: username, content }).catch(error=>console.log(error));
+    return this.hubConnection.invoke('SendMessage', { recipientUsername: username, content }).catch(error => console.log(error));
   }
 
   deleteMessage(id: number) {
